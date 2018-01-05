@@ -1,18 +1,38 @@
 import responses
 from requests.status_codes import codes
 import re
+import os
 
-base_url = 'https://api-test.intros.it/1'
+
+base_url = 'https://api-test.intros.at/1'
+
+path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'responses')
+
+examples = {}
+
+for item in os.listdir(path):
+    if item.endswith('.json'):
+        fname, ext = os.path.splitext(item)
+        with open(os.path.join(path, item), 'r') as f:
+            examples[fname] = f.read()
 
 
 class GripTestsBase():
-
-    default_uri = re.compile('%s/(\w+)' % base_url)
+    default_uri = re.compile('%s/(\w+)' % (base_url))
 
     requests_mock = {
         'test_list_containers': {
-            'uri': '%s/container',
+            'uri': '%s/container' % base_url,
             'body': '{"success":true,"data":[{"id":17732,"name":"Test"}]}'
+        },
+        'test_get_container': {
+            'uri': re.compile('%s/container/\d+' % base_url),
+            'body': examples['test_get_container']
+        },
+        'test_create_container': {
+            'uri': '%s/container' % base_url,
+            'body': examples['test_create_container'],
+            'method': responses.POST
         }
     }
 

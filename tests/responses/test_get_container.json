@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "data": {
+    "id": 23,
+    "application_id": 1,
+    "description": null,
+    "name": "Founders Forum",
+    "type": "public",
+    "color": "#00FFCC",
+    "picture_url": "http://event.picture.com/picture.png",
+    "website_url": "http://event.website.com",
+    "owner_id": 5110,
+    "uri": "/1/container/23",
+    "active": 1,
+    "recommended": "yes",
+    "match_inactive_pct": "0.0",
+    "date_active": 1502287176,
+    "date_created": 1502287176,
+    "date_updated": null,
+    "owner": {
+      "id": 5110,
+      "application_id": 1,
+      "name": "Pablo de Luiz",
+      "first_name": "Pablo",
+      "last_name": "de Luiz",
+      "email": "pablo@event.website.com",
+      "headline": "Event Organizer",
+      "summary": "I organize events at Grip...",
+      "job_title": null,
+      "company_name": "Grip",
+      "job_industry": "Events Tech",
+      "gps_lat": 111,
+      "gps_lng": 222,
+      "location": "London, UK",
+      "location_lat": null,
+      "location_lng": null,
+      "picture_url": "https://event.image.com/picture_jpg",
+      "type_id": 1,
+      "type_key": "organizer",
+      "type_key_translation": "organisateur",
+      "registration_id": "REG-123456",
+      "active": 1,
+      "uri": "/1/thing/51108",
+      "date_created": 1502287176,
+      "date_updated": 1502299176,
+      "can_meet": 1,
+      "can_swipe": 1,
+      "categories": [
+        "events"
+      ],
+      "categories_ids": [
+        1
+      ],
+      "current_position": {},
+      "positions": []
+    },
+    "user_count": 513,
+    "connections_count": 16,
+    "extensions": [
+      {
+        "name": "Website",
+        "icon": "extension_website",
+        "url": "http://event.website.com",
+        "type": "web",
+        "layout": "webview",
+        "sort_order": 1
+      },
+      {
+        "name": "Maps",
+        "icon": "extension_ask",
+        "url": "https://event.website.com/maps.html",
+        "type": "web",
+        "layout": "webview",
+        "sort_order": 2
+      }
+    ]
+  }
+}

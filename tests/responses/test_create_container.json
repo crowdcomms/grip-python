@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "data": {
+    "id": 95932755,
+    "application_id": 34244755,
+    "description": null,
+    "name": "fugiat aute cillum exercitation",
+    "type": "private",
+    "color": "#345345",
+    "picture_url": "occaecat.jpg",
+    "thumbnail_url": "incidid.jpg",
+    "website_url": null,
+    "owner_id": null,
+    "uri": "/1/container/95932755",
+    "active": 1,
+    "recommended": "no",
+    "match_inactive_pct": "0.0",
+    "date_active": null,
+    "date_created": 1508844381,
+    "date_updated": null,
+    "owner": null,
+    "user_count": 5,
+    "connections_count": 2,
+    "extensions": []
+  }
+}

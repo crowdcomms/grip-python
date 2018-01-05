@@ -9,9 +9,14 @@ def api_key():
 
 @pytest.fixture(scope='session')
 def container_id():
-    return '16234'
+    return 16234
 
 
 @pytest.fixture(scope='function')
 def grip_client(api_key):
     return GRIPClient(api_key=api_key)
+
+
+@pytest.fixture(scope='function')
+def grip_test_client(api_key):
+    return GRIPClient(api_key=api_key, test_mode=True)
