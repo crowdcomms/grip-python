@@ -29,9 +29,14 @@ class Thing(POPO):
         self.__dict__.update(kwargs)
 
     def to_payload(self):
+
+        assert hasattr(self, 'email') and self.email, \
+            "Thing must have an email address"
+
         result = {}
         for f in self.fields:
-            result[f] = getattr(self, f, None)
+            if hasattr(self, f):
+                result[f] = getattr(self, f)
         return result
 
 

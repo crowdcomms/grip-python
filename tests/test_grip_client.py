@@ -88,14 +88,13 @@ class TestGripClient(GripTestsBase):
         thing = Thing(
             first_name="Test",
             last_name="User",
-            job_industry="Automotive"
+            job_industry="Automotive",
+            email="test@example.com"
         )
 
         payload = thing.to_payload()
         assert 'job_industry' in payload
         assert payload['job_industry'] == 'Automotive'
-        assert 'company_name' in payload
-        assert payload.get('company_name') is None
 
     def test_create_thing_from_thing(self, grip_test_client):
         data = {
