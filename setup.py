@@ -9,7 +9,7 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 __version__ = None
-with open('grip/version.py') as f:
+with open('grip_intros/version.py') as f:
     exec(f.read())
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
