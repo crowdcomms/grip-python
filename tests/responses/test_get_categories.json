@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "category": "Exhibitor"
+    },
+    {
+      "id": 2,
+      "category": "Investor"
+    },
+    {
+      "id": 3,
+      "category": "Real Estate"
+    }
+  ]
+}

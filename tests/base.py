@@ -33,6 +33,27 @@ class GripTestsBase():
             'uri': '%s/container' % base_url,
             'body': examples['test_create_container'],
             'method': responses.POST
+        },
+        'test_base_url_auto': {
+            'uri': '%s/container' % base_url,
+            'body': '{"success":true,"data":[{"id":17732,"name":"Test"}]}'
+        },
+        'test_get_container_things': {
+            'uri': re.compile('%s/container/\d+/thing' % base_url),
+            'body': examples['test_get_container_things']
+        },
+        'test_get_thing_detail': {
+            'uri': re.compile('%s/thing/\d+' % base_url),
+            'body': examples['test_get_thing_detail']
+        },
+        'test_get_categories': {
+            'uri': '%s/thing/category' % base_url,
+            'body': examples['test_get_categories']
+        },
+        'test_create_thing_from_thing': {
+            'uri': '%s/thing' % base_url,
+            'body': examples['test_create_thing_from_thing'],
+            'method': responses.POST
         }
     }
 
