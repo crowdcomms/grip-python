@@ -17,7 +17,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     # Project
-    name='grip-python',
+    name='grip-intros',
     version=str(__version__),
     description='Python client for GRIP meetings API',
     long_description=long_description,
