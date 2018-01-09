@@ -46,6 +46,7 @@ setup(
 
     keywords='grip client meetings connections things api',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    include_package_data=True,
 
     # Requirements - https://packaging.python.org/en/latest/requirements.html
     install_requires=[
