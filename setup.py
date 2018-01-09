@@ -5,22 +5,22 @@ https://github.com/crowdcomms/grip-python
 """
 from setuptools import setup, find_packages
 from codecs import open
-from os import path
+import os
 
-here = path.abspath(path.dirname(__file__))
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+os.chdir(PACKAGE_DIR)
+
 __version__ = None
 with open('grip_intros/version.py') as f:
     exec(f.read())
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
 
 setup(
     # Project
     name='grip-intros',
     version=str(__version__),
     description='Python client for GRIP meetings API',
-    long_description=long_description,
+    long_description=open(os.path.join(PACKAGE_DIR, 'README.md')).read(),
     url='https://github.com/crowdcomms/grip-python',
 
     # Author
