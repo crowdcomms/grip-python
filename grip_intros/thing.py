@@ -44,8 +44,12 @@ class Thing(POPO):
         assert hasattr(self, 'id') and isinstance(getattr(self, 'id'), int)
         url = '/thing/%d/category' % self.id
         response = self._client.get(url)
+        data = response.get('data')
+        if isinstance(data, dict):
+            data = [data]
         return [
-            self._client._create_object(Category, item) for item in response.get('data')
+            self._client._create_obj(Category, item)
+            for item in data
         ]
 
 

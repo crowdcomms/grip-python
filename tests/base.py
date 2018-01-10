@@ -71,6 +71,13 @@ class GripTestsBase():
         'test_thing_get_categories': {
             'uri': re.compile('%s/thing/\d+/category' % base_url),
             'body': examples['test_thing_get_categories']
+        },
+        'test_get_thing_auth_token': {
+            'uri': re.compile('%s/thing/\d+/token' % base_url),
+            'body': '{"success": true, '
+                    '"data": {'
+                    '"token": "a14e6e6c-8caa-4680-818e-dae482bb60fd"}}',
+
         }
 
     }

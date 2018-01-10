@@ -1,3 +1,5 @@
+import responses
+
 from tests.base import GripTestsBase
 from grip_intros.container import Container
 from grip_intros.thing import Category, Thing
@@ -10,10 +12,9 @@ class TestGripClient(GripTestsBase):
         assert url == 'https://api.intros.at/1/container'
 
     def test_base_url_auto(self, grip_test_client):
-        response = grip_test_client.get('/container')
-        assert response == {
-            'data': [{'id': 17732, 'name': 'Test'}], 'success': True
-        }
+        grip_test_client.get('/container')
+        assert responses.calls[0].\
+            request.url == 'https://api-test.intros.at/1/container'
 
     def test_get_headers(self, grip_client):
         headers = grip_client.get_headers()
@@ -57,6 +58,16 @@ class TestGripClient(GripTestsBase):
         thing = grip_test_client.get_thing(thing_id)
         assert thing.job_title == 'CEO'
         assert thing._client == grip_test_client
+
+    def test_get_thing_auth_token(self, grip_test_client, thing_id):
+        token = grip_test_client.get_thing_auth_token(
+            thing_id, 'some-random-device-id'
+        )
+        assert isinstance(token, str)
+        assert 'session-source' in responses.calls[0].request.headers
+        assert responses.calls[0].request.headers.get('session-source') == \
+            'some-random-device-id'
+        assert token == 'a14e6e6c-8caa-4680-818e-dae482bb60fd'
 
     def test_get_categories(self, grip_test_client):
         categories = grip_test_client.get_categories()

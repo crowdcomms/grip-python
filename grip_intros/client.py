@@ -29,9 +29,11 @@ class GRIPClient:
 
         return self.build_uri(url_or_path)
 
-    def get(self, url):
+    def get(self, url, headers={}):
+        final_headers = self.get_headers()
+        final_headers.update(headers)
         url = self.get_complete_url(url)
-        request = requests.get(url, headers=self.get_headers())
+        request = requests.get(url, headers=final_headers)
         request.raise_for_status()
         return request.json()
 
@@ -101,11 +103,20 @@ class GRIPClient:
 
     def get_things(self, container_id):
         response = self.get(f'/container/{container_id}/thing')
-        return [self._create_obj(Thing, item) for item in response.get('data')]
+        return [
+            self._create_obj(Thing, item) for item in response.get('data')
+        ]
 
     def get_thing(self, thing_id):
         response = self.get(f'/thing/{thing_id}')
         return self._create_obj(Thing, response.get('data'))
+
+    def get_thing_auth_token(self, thing_id, session_source):
+        response = self.get(
+            f'/thing/{thing_id}/token',
+            headers={'session-source': session_source}
+        )
+        return response.get('data').get('token')
 
     def create_thing(self, thing):
         if isinstance(thing, Thing):
