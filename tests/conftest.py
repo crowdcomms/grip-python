@@ -4,6 +4,8 @@ from grip_intros.container import Container
 import os
 import json
 
+from grip_intros.thing import Thing
+
 path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'responses')
 
 
@@ -26,6 +28,12 @@ def thing_id():
 def example_container():
     with open(os.path.join(path, 'test_get_container.json')) as f:
         return Container.from_dict(json.load(f).get('data'))
+
+
+@pytest.fixture(scope='session')
+def example_thing():
+    with open(os.path.join(path, 'test_get_thing_detail.json')) as f:
+        return Thing.from_dict(json.load(f).get('data'))
 
 
 @pytest.fixture(scope='function')

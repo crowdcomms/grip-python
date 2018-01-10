@@ -1,12 +1,9 @@
-import json
-
 import requests
-
 from grip_intros.container import Container
 from grip_intros.thing import Thing, Category
 
 
-class GRIPClient():
+class GRIPClient:
 
     def __init__(self, api_key, test_mode=False):
         self.api_key = api_key
@@ -14,6 +11,11 @@ class GRIPClient():
             self.base_uri = 'https://api-test.intros.at/1/'
         else:
             self.base_uri = 'https://api.intros.at/1/'
+
+    def _create_obj(self, cls, data):
+        obj = cls.from_dict(data)
+        obj.set_client(self)
+        return obj
 
     def build_uri(self, path):
         return "%s%s" % (self.base_uri, path)
@@ -31,7 +33,7 @@ class GRIPClient():
         url = self.get_complete_url(url)
         request = requests.get(url, headers=self.get_headers())
         request.raise_for_status()
-        return request.json().get('data')
+        return request.json()
 
     def post(self, url, payload={}, headers={}):
         url = self.get_complete_url(url)
@@ -50,9 +52,18 @@ class GRIPClient():
         return request.json()
 
     def delete(self, url, headers={}):
+        url = self.get_complete_url(url)
         final_headers = self.get_headers()
         final_headers.update(headers)
         request = requests.delete(url, headers=final_headers)
+        request.raise_for_status()
+        return request.json()
+
+    def put(self, url, payload={}, headers={}):
+        url = self.get_complete_url(url)
+        final_headers = self.get_headers()
+        final_headers.update(headers)
+        request = requests.put(url, json=payload, headers=final_headers)
         request.raise_for_status()
         return request.json()
 
@@ -71,12 +82,13 @@ class GRIPClient():
     def list_containers(self):
         url = self.build_uri('container')
         response = self.get(url)
-        return [Container.from_dict(data) for data in response]
+        data = response.get('data')
+        return [self._create_obj(Container, item) for item in data]
 
     def get_container(self, container_id):
         url = self.build_uri('container/%i' % container_id)
         response = self.get(url)
-        return Container.from_dict(response)
+        return self._create_obj(Container, response.get('data'))
 
     def create_container(self, container):
         url = self.build_uri('container')
@@ -85,15 +97,15 @@ class GRIPClient():
         else:
             payload = container
         response = self.post(url, payload)
-        return Container.from_dict(response.get('data'))
+        return self._create_obj(Container, response.get('data'))
 
     def get_things(self, container_id):
         response = self.get(f'/container/{container_id}/thing')
-        return [Thing.from_dict(item) for item in response]
+        return [self._create_obj(Thing, item) for item in response.get('data')]
 
     def get_thing(self, thing_id):
         response = self.get(f'/thing/{thing_id}')
-        return Thing.from_dict(response)
+        return self._create_obj(Thing, response.get('data'))
 
     def create_thing(self, thing):
         if isinstance(thing, Thing):
@@ -106,8 +118,10 @@ class GRIPClient():
 
         url = self.build_uri('thing')
         response = self.post(url, payload)
-        return Thing.from_dict(response.get('data'))
+        return self._create_obj(Thing, response.get('data'))
 
     def get_categories(self):
         response = self.get(f'/thing/category')
-        return [Category.from_dict(item) for item in response]
+        return [
+            self._create_obj(Category, item) for item in response.get('data')
+        ]

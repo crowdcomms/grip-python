@@ -35,3 +35,24 @@ class Container(POPO):
             ret[attr] = getattr(self, attr, '')
 
         return ret
+
+    def add_thing(self, thing_id, data={}):
+        """
+        Add the thing identified by thing_id to this container
+        :param thing_id: int
+        :param data: optional registration data (dict)
+        :return: response
+        """
+        assert self._client is not None
+        url = "/container/%d/thing/%d" % (self.id, thing_id)
+        return self._client.put(url, data)
+
+    def remove_thing(self, thing_id):
+        """
+        Remove the thing identified by thing_id from this container
+        :param thing_id: int
+        :return:
+        """
+        assert self._client is not None
+        url = "/container/%d/thing/%d" % (self.id, thing_id)
+        return self._client.delete(url)

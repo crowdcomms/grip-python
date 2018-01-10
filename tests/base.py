@@ -54,7 +54,25 @@ class GripTestsBase():
             'uri': '%s/thing' % base_url,
             'body': examples['test_create_thing_from_thing'],
             'method': responses.POST
+        },
+        'test_container_add_thing': {
+            'uri': re.compile('%s/container/\d+/thing/\d+' % base_url),
+            'body': '{"success": true,"data": '
+                    '{"message": "join created",'
+                    '"uri": "/1/container/23/thing/5577"}}',
+            'method': responses.PUT
+        },
+        'test_container_remove_thing': {
+            'uri': re.compile('%s/container/\d+/thing/\d+' % base_url),
+            'body': '{"success": true, "data": '
+                    '{"success": "connection deleted"}}',
+            'method': responses.DELETE
+        },
+        'test_thing_get_categories': {
+            'uri': re.compile('%s/thing/\d+/category' % base_url),
+            'body': examples['test_thing_get_categories']
         }
+
     }
 
     def setup_method(self, method):

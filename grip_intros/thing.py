@@ -39,6 +39,15 @@ class Thing(POPO):
                 result[f] = getattr(self, f)
         return result
 
+    def get_categories(self):
+        assert self._client is not None
+        assert hasattr(self, 'id') and isinstance(getattr(self, 'id'), int)
+        url = '/thing/%d/category' % self.id
+        response = self._client.get(url)
+        return [
+            self._client._create_object(Category, item) for item in response.get('data')
+        ]
+
 
 class Category(POPO):
     pass

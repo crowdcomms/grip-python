@@ -3,33 +3,6 @@ from grip_intros.container import Container
 from grip_intros.thing import Category, Thing
 
 
-class TestContainer(GripTestsBase):
-
-    def test_container_from_dict(self):
-        data = {
-            'name': 'Bongo',
-            'description': 'Congo',
-            'id': 23
-        }
-        instance = Container.from_dict(data)
-        assert instance.name == 'Bongo'
-        assert instance.description == 'Congo'
-        assert instance.id == 23
-
-    def test_container_payload(self):
-        data = {
-            'name': 'Bongo',
-            'description': 'Congo',
-            'id': 23
-        }
-        instance = Container.from_dict(data)
-        payload = instance.to_payload()
-        assert 'name' in payload
-        assert payload['name'] == 'Bongo'
-        assert 'picture' in payload
-        assert payload['picture'] is None
-
-
 class TestGripClient(GripTestsBase):
 
     def test_build_uri(self, grip_client):
@@ -38,7 +11,9 @@ class TestGripClient(GripTestsBase):
 
     def test_base_url_auto(self, grip_test_client):
         response = grip_test_client.get('/container')
-        assert response == [{"id": 17732, "name": "Test"}]
+        assert response == {
+            'data': [{'id': 17732, 'name': 'Test'}], 'success': True
+        }
 
     def test_get_headers(self, grip_client):
         headers = grip_client.get_headers()
@@ -52,6 +27,7 @@ class TestGripClient(GripTestsBase):
         assert len(containers) == 1
         assert isinstance(containers, list)
         assert isinstance(containers[0], Container)
+        assert containers[0]._client == grip_test_client
 
     def test_get_container(self, grip_test_client, container_id):
         container = grip_test_client.get_container(container_id)
@@ -68,20 +44,24 @@ class TestGripClient(GripTestsBase):
         )
         response = grip_test_client.create_container(container)
         assert isinstance(response, Container)
+        assert response._client == grip_test_client
         assert hasattr(response, 'id')
 
     def test_get_container_things(self, grip_test_client, container_id):
         things = grip_test_client.get_things(container_id)
         assert isinstance(things, list)
         assert len(things) == 5
+        assert things[0]._client == grip_test_client
 
     def test_get_thing_detail(self, grip_test_client, thing_id):
         thing = grip_test_client.get_thing(thing_id)
         assert thing.job_title == 'CEO'
+        assert thing._client == grip_test_client
 
     def test_get_categories(self, grip_test_client):
         categories = grip_test_client.get_categories()
         assert isinstance(categories[0], Category)
+        assert categories[0]._client == grip_test_client
         assert len(categories) == 3
 
     def test_thing_payload(self):
@@ -132,5 +112,6 @@ class TestGripClient(GripTestsBase):
         thing = Thing.from_dict(data)
         assert isinstance(thing, Thing)
         thing = grip_test_client.create_thing(thing)
+        assert thing._client == grip_test_client
         assert hasattr(thing, 'id')
         assert isinstance(thing.id, int)
