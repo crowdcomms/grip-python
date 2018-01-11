@@ -42,7 +42,7 @@ class Thing(POPO):
     def get_categories(self):
         assert self._client is not None
         assert hasattr(self, 'id') and isinstance(getattr(self, 'id'), int)
-        url = '/thing/%d/category' % self.id
+        url = '/thing/{thing_id}/category'.format(thing_id=getattr(self, 'id'))
         response = self._client.get(url)
         data = response.get('data')
         if isinstance(data, dict):

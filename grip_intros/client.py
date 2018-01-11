@@ -78,7 +78,7 @@ class GRIPClient:
 
         return {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer %s' % self.api_key
+            'Authorization': 'Bearer {token}'.format(token=self.api_key)
         }
 
     def list_containers(self):
@@ -88,7 +88,9 @@ class GRIPClient:
         return [self._create_obj(Container, item) for item in data]
 
     def get_container(self, container_id):
-        url = self.build_uri('container/%i' % container_id)
+        url = self.build_uri(
+            'container/{container_id}'.format(container_id=container_id)
+        )
         response = self.get(url)
         return self._create_obj(Container, response.get('data'))
 
@@ -102,18 +104,20 @@ class GRIPClient:
         return self._create_obj(Container, response.get('data'))
 
     def get_things(self, container_id):
-        response = self.get(f'/container/{container_id}/thing')
+        response = self.get(
+            '/container/{container_id}/thing'.format(container_id=container_id)
+        )
         return [
             self._create_obj(Thing, item) for item in response.get('data')
         ]
 
     def get_thing(self, thing_id):
-        response = self.get(f'/thing/{thing_id}')
+        response = self.get('/thing/{thing_id}'.format(thing_id=thing_id))
         return self._create_obj(Thing, response.get('data'))
 
     def get_thing_auth_token(self, thing_id, session_source):
         response = self.get(
-            f'/thing/{thing_id}/token',
+            '/thing/{thing_id}/token'.format(thing_id=thing_id),
             headers={'session-source': session_source}
         )
         return response.get('data').get('token')
@@ -132,7 +136,7 @@ class GRIPClient:
         return self._create_obj(Thing, response.get('data'))
 
     def get_categories(self):
-        response = self.get(f'/thing/category')
+        response = self.get('/thing/category')
         return [
             self._create_obj(Category, item) for item in response.get('data')
         ]

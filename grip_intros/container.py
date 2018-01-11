@@ -44,7 +44,9 @@ class Container(POPO):
         :return: response
         """
         assert self._client is not None
-        url = "/container/%d/thing/%d" % (self.id, thing_id)
+        url = "/container/{container_id}/thing/{thing_id}".format(
+            container_id=getattr(self, 'id'), thing_id=thing_id
+        )
         return self._client.put(url, data)
 
     def remove_thing(self, thing_id):
@@ -54,5 +56,7 @@ class Container(POPO):
         :return:
         """
         assert self._client is not None
-        url = "/container/%d/thing/%d" % (self.id, thing_id)
+        url = "/container/{container_id}/thing/{thing_id}".format(
+            container_id=getattr(self, 'id'), thing_id=thing_id
+        )
         return self._client.delete(url)
