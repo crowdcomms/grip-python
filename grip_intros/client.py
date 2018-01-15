@@ -122,18 +122,27 @@ class GRIPClient:
         )
         return response.get('data').get('token')
 
-    def create_thing(self, thing):
-        if isinstance(thing, Thing):
-            payload = thing.to_payload()
+    def _get_thing_data(self, thing_or_dict):
+        if isinstance(thing_or_dict, Thing):
+            payload = thing_or_dict.to_payload()
         else:
-            payload = thing
+            payload = thing_or_dict
 
         assert isinstance(payload, dict), \
             'Must supply an instance of grip.thing.Thing or dict'
 
+        return payload
+
+    def create_thing(self, thing):
+        payload = self._get_thing_data(thing)
         url = self.build_uri('thing')
         response = self.post(url, payload)
         return self._create_obj(Thing, response.get('data'))
+
+    def update_thing(self, thing_id, thing):
+        payload = self._get_thing_data(thing)
+        url = self.build_uri('thing/{thing_id}'.format(thing_id=thing_id))
+        return self.patch(url, payload)
 
     def get_categories(self):
         response = self.get('/thing/category')
